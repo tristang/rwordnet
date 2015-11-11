@@ -66,15 +66,17 @@ module WordNet
         end
       end
 
-      private
-
       def build_cache(pos)
         cache = {}
         DB.open(File.join("dict", "index.#{pos}")).each_line.each_with_index do |line, index|
           word = line.slice(0, line.index(SPACE))
           cache[word] = [line, index+1]
         end
-        cache
+        @@cache[pos] ||= cache
+      end
+
+      def cache
+        @@cache
       end
     end
   end
